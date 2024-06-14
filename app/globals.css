@@ -10,7 +10,7 @@
 
 @layer components {
   .btn {
-    @apply rounded-sexy-name h-10 w-full bg-black text-white;
+    @apply rounded-sexy-name mt-tomato h-10 w-full bg-black text-white;
   }
 }
 
