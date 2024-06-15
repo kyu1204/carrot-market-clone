@@ -1,3 +1,5 @@
+import FormButton from "@/components/form-button";
+import FormInput from "@/components/form-input";
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
@@ -9,15 +11,21 @@ export default function CreateAccount() {
         <h2>Fill in ther form below to join!</h2>
       </div>
       <form className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <input
-            className="foucus:ring-2 h-10 w-full rounded-md border-none bg-transparent ring-1 ring-neutral-200 placeholder:text-neutral-400 focus:outline-none focus:ring-orange-500"
-            type="text"
-            placeholder="Username"
-          />
-          <span className="font-medium text-red-500">Input error</span>
-        </div>
-        <button className="primary-btn h-10">Create account</button>
+        <FormInput required type="text" placeholder="Username" errors={[]} />
+        <FormInput required type="email" placeholder="Email" errors={[]} />
+        <FormInput
+          required
+          type="password"
+          placeholder="Password"
+          errors={[]}
+        />
+        <FormInput
+          required
+          type="password"
+          placeholder="Confirm Password"
+          errors={[]}
+        />
+        <FormButton loading={false} text="Create Account" />
       </form>
       <div className="h-px w-full bg-neutral-500" />
       <div>
