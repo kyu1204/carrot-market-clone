@@ -9,8 +9,8 @@
 }
 
 @layer components {
-  .btn {
-    @apply rounded-sexy-name mt-tomato h-10 w-full bg-black text-white;
+  .primary-btn {
+    @apply w-full rounded-md bg-orange-500 text-center font-medium text-white transition-colors hover:bg-orange-400;
   }
 }
 
