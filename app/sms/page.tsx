@@ -11,17 +11,19 @@ export default function SMSLogin() {
       <form className="flex flex-col gap-3">
         <FormInput
           required
+          name="phone_number"
           type="number"
           placeholder="Phone number"
           errors={[]}
         />
         <FormInput
           required
+          name="verification_code"
           type="number"
           placeholder="Verification code"
           errors={[]}
         />
-        <FormButton loading={false} text="Verify" />
+        <FormButton text="Verify" />
       </form>
     </div>
   );
