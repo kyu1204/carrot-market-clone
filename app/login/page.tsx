@@ -2,7 +2,7 @@ import FormButton from "@/components/form-button";
 import FormInput from "@/components/form-input";
 import SocialLogin from "@/components/social-login";
 
-export default function LogIn() {
+export default function Login() {
   return (
     <div className="flex flex-col gap-10 px-6 py-8">
       <div className="flex flex-col gap-2 *:font-medium">
@@ -17,7 +17,7 @@ export default function LogIn() {
           placeholder="Password"
           errors={[]}
         />
-        <FormButton loading={false} text="Log In" />
+        <FormButton loading={false} text="Log in" />
       </form>
       <SocialLogin />
     </div>
