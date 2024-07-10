@@ -11,3 +11,9 @@ export async function getSession() {
     password: process.env.COOKIE_PASSWORD!,
   });
 }
+
+export async function signIn(userId: string) {
+  const session = await getSession();
+  session.id = userId;
+  await session.save();
+}

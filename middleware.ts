@@ -9,6 +9,8 @@ const publicOnlyUrls: IRoutes = {
   "/login": true,
   "/sms": true,
   "/create-account": true,
+  "/github/start": true,
+  "/github/complete": true,
 };
 export async function middleware(request: NextRequest) {
   const session = await getSession();
