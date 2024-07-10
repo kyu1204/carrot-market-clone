@@ -1,5 +1,6 @@
 "use server";
 
+import twilio from "twilio";
 import { z } from "zod";
 import validator from "validator";
 import { redirect } from "next/navigation";
@@ -35,6 +36,7 @@ const tokenSchema = z.coerce
 
 interface IsmsLoginState {
   token: boolean;
+  phone?: string;
 }
 
 async function getToken() {
@@ -88,28 +90,51 @@ export async function smsLogin(prevState: IsmsLoginState, formData: FormData) {
           },
         },
       });
-
+      const client = twilio(
+        process.env.TWILIO_ACCOUNT_SID,
+        process.env.TWILIO_AUTH_TOKEN,
+      );
+      await client.messages.create({
+        body: `Your karrot verification code is: ${token}`,
+        from: process.env.TWILIO_PHONE_NUMBER!,
+        to: process.env.TWHILO_MY_PHONE_NUMBER!,
+      });
       return {
         token: true,
+        phone: result.data,
       };
     }
   } else {
-    const result = await tokenSchema.spa(token);
-    if (!result.success) {
+    const tokenResult = await tokenSchema.spa(token);
+    const phoneResult = await phoneSchema.safeParse(prevState.phone);
+    if (!tokenResult.success) {
       return {
-        token: true,
-        error: result.error.flatten(),
+        ...prevState,
+        error: tokenResult.error.flatten(),
       };
     } else {
       const token = await db.sMSToken.findUnique({
         where: {
-          token: result.data,
+          token: tokenResult.data,
+          user: {
+            phone: phoneResult.data,
+          },
         },
         select: {
           id: true,
           userId: true,
         },
       });
+
+      if (!token) {
+        return {
+          ...prevState,
+          error: {
+            formErrors: ["This token is not exists"],
+          },
+        };
+      }
+
       await signIn(token!.userId);
       await db.sMSToken.delete({
         where: {
