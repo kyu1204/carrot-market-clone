@@ -1,6 +1,10 @@
+"use server";
+
 import { z } from "zod";
 import validator from "validator";
 import { redirect } from "next/navigation";
+import crypto from "crypto";
+import db from "@/lib/db";
 
 const phoneSchema = z
   .string()
@@ -16,6 +20,22 @@ interface IsmsLoginState {
   token: boolean;
 }
 
+async function getToken() {
+  const token = crypto.randomInt(100000, 999999).toString();
+  const exist = await db.sMSToken.findUnique({
+    where: { token },
+    select: {
+      id: true,
+    },
+  });
+
+  if (exist) {
+    return getToken();
+  } else {
+    return token;
+  }
+}
+
 export async function smsLogin(prevState: IsmsLoginState, formData: FormData) {
   const phone = formData.get("phone");
   const token = formData.get("token");
@@ -27,6 +47,31 @@ export async function smsLogin(prevState: IsmsLoginState, formData: FormData) {
         error: result.error.flatten(),
       };
     } else {
+      await db.sMSToken.deleteMany({
+        where: {
+          user: {
+            phone: result.data,
+          },
+        },
+      });
+      const token = await getToken();
+      await db.sMSToken.create({
+        data: {
+          token,
+          user: {
+            connectOrCreate: {
+              where: {
+                phone: result.data,
+              },
+              create: {
+                username: crypto.randomBytes(10).toString("hex"),
+                phone: result.data,
+              },
+            },
+          },
+        },
+      });
+
       return {
         token: true,
       };
