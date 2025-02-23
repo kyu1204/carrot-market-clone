@@ -14,8 +14,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  // @ts-ignore
-  potato,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -24,7 +22,6 @@ export default function RootLayout({
       <body
         className={`${inter.className} mx-auto max-w-screen-sm bg-neutral-900 text-white`}
       >
-        {potato}
         {children}
       </body>
     </html>
