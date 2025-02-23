@@ -3,7 +3,7 @@
 import { initialProducts } from "@/app/(tabs)/home/page";
 import ListProduct from "./list-product";
 import { useEffect, useRef, useState } from "react";
-import { getMoreProducts } from "@/app/products/[id]/actions";
+import { getMoreProducts } from "@/app/(tabs)/home/actions";
 
 interface IProductListProps {
   initialProducts: initialProducts;
